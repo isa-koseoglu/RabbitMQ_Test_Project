@@ -4,7 +4,7 @@ RabbitMQ ile Server ve Client arasındaki iletişimi kuyruklama sisteme aktarım
 # Server
 Console ekranında sistem okuam işlemi yapıyor.
   
-  -> Clientten servere sadece 1 Queue kuryuğuna mesjalar kayı edilir .
+  -> Clientten servere sadece 1 Queue kuryuğuna mesjalar kayı edilir .\n
   -> Client kendi bilgilerini gönderiri ve onun için oluşmasını istediği kuyruğunu oluşturmak ister eğer geri bir cevap işstemiyorsa kuyruk oluşmaz.
   -> Sistem dinamik bir yapıda olup istenilen kadar kuyruk oluşturulabilir , mesaj eklenebilir  ve silinebilir.
  
