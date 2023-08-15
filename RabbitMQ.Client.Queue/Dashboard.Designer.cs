@@ -123,9 +123,9 @@
             label1.AutoSize = true;
             label1.Location = new Point(73, 11);
             label1.Name = "label1";
-            label1.Size = new Size(48, 15);
+            label1.Size = new Size(60, 15);
             label1.TabIndex = 2;
-            label1.Text = "Kaç Pos";
+            label1.Text = "Kaç Client";
             // 
             // pnl1SendRequest_btn
             // 
@@ -148,11 +148,11 @@
             // 
             AllDeleteQueue_btn.BackColor = Color.FromArgb(192, 0, 0);
             AllDeleteQueue_btn.FlatStyle = FlatStyle.Popup;
-            AllDeleteQueue_btn.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            AllDeleteQueue_btn.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
             AllDeleteQueue_btn.ForeColor = Color.White;
-            AllDeleteQueue_btn.Location = new Point(434, 16);
+            AllDeleteQueue_btn.Location = new Point(497, 457);
             AllDeleteQueue_btn.Name = "AllDeleteQueue_btn";
-            AllDeleteQueue_btn.Size = new Size(115, 67);
+            AllDeleteQueue_btn.Size = new Size(465, 34);
             AllDeleteQueue_btn.TabIndex = 4;
             AllDeleteQueue_btn.Text = "Tüm Kuyrukları Sil";
             AllDeleteQueue_btn.UseVisualStyleBackColor = false;

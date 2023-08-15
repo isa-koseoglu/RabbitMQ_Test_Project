@@ -69,6 +69,43 @@ namespace RabbitMQ.Client.Queue
             }
 
         }
+        public async Task LogDeleted()
+        {
+            if (listBox1.InvokeRequired)
+            {
+                listBox1.Invoke((MethodInvoker)delegate
+                {
+                    LogDeleted();
+                });
+            }
+            else
+            {
+                listBox1.Items.Clear();
+            }
+
+            if (listBox2.InvokeRequired)
+            {
+                listBox2.Invoke((MethodInvoker)delegate
+                {
+                    LogDeleted();
+                });
+            }
+            else
+            {
+                listBox2.Items.Clear();
+            }
+            if (listBox3.InvokeRequired)
+            {
+                listBox3.Invoke((MethodInvoker)delegate
+                {
+                    LogDeleted();
+                });
+            }
+            else
+            {
+                listBox3.Items.Clear();
+            }
+        }
         #endregion
 
         public Dashboard()
@@ -214,38 +251,74 @@ namespace RabbitMQ.Client.Queue
             }
 
         }
-        private void pnl1SendRequest_btn_Click(object sender, EventArgs e) /* servere mesajý publish ediyorum */
+        private  void pnl1SendRequest_btn_Click(object sender, EventArgs e) /* servere mesajý publish ediyorum */
         {
-            int count = Convert.ToInt32(pnl1CountClient_txt.Text);
-            for (int i = 1; i <= count; i++)
+            if (string.IsNullOrEmpty(pnl1CountClient_txt.Text))
             {
-                GetVersionModel model = new GetVersionModel
+                MessageBox.Show("Lütfen Boþ Býrakmayýnýz Adedi");
+                return;
+            }
+            bool checkNumer = false;
+            try
+            {
+                int numbertxt = int.Parse(pnl1CountClient_txt.Text);
+                checkNumer = true;
+            }
+            catch (Exception)
+            {
+                checkNumer = false;
+                MessageBox.Show("Lütfen Sayý Dýþýnda Veri Girmeyiniz.");
+            }
+
+            if (checkNumer)
+            {
+                int count = Convert.ToInt32(pnl1CountClient_txt.Text);
+                Task task = new(() =>
                 {
-                    MyQueueName = "SET_VERSIYON_" + i + "_1_RABBIT",
-                    BranchCode = i,
-                    StationNo = 1,
-                    ApiVers = "4.1.7.4",
-                    HtmlVers = "5.3.0"
-                };
-                WriteToQueue(_channel, _routesVersionExchange, _getVersiyonRoutKey, model);
+                    for (int i = 1; i <= count; i++)
+                    {
+                        GetVersionModel model = new GetVersionModel
+                        {
+                            MyQueueName = "SET_VERSIYON_" + i + "_1_RABBIT",
+                            BranchCode = i,
+                            StationNo = 1,
+                            ApiVers = "4.1.7.4",
+                            HtmlVers = "5.3.0"
+                        };
+                        WriteToQueue(_channel, _routesVersionExchange, _getVersiyonRoutKey, model);
+                    }
+                });
+                task.Start();
+                
             }
         }
 
         private async void AllDeleteQueue_btn_Click(object sender, EventArgs e) /* server tarafýnda clienta özgü oluþturduðum eventleri silme planlanmasý bunun servere eklenmesi gerekiyor tek bir yereden yönetim için test için buraya ekelndi. */
         {
-            var queueAllList = await GetAllQueueAsync();
-            if (queueAllList.Count == 0)
+            Task task = new(async () =>
             {
-                MessageBox.Show($"Kuyruk Yok ");
-                return;
-            }
-            foreach (var queue in queueAllList)
-            {
-                _channel.QueueDelete(queue);
-            }
-            listBox3.Items.Clear();
-            AddLog3("Sistem Dinliyor");
-            MessageBox.Show($"{queueAllList.Count} adet kuyruk silindi.. ");
+                var queueAllList = await GetAllQueueAsync();
+                if (queueAllList.Count == 0)
+                {
+                    MessageBox.Show($"Kuyruk Yok ");
+                    
+                }
+                else
+                {
+                    foreach (var queue in queueAllList)
+                    {
+                        _channel.QueueDelete(queue);
+                    }
+                    MessageBox.Show($"{queueAllList.Count} adet kuyruk silindi.. ");
+                }
+                
+                LogDeleted();
+                AddLog1("Sistem Dinliyor");
+                AddLog2("Sistem Dinliyor");
+                AddLog3("Sistem Dinliyor");
+                
+            });
+            task.Start();
 
         }
 
@@ -257,25 +330,29 @@ namespace RabbitMQ.Client.Queue
                 AddLog3("Bana Tanýmlanmýþ Kuyruk Yok ki");
                 return;
             }
-            foreach (var getQueue in getlistQueue)
+            Task task = new(() =>
             {
-                string getQueueKey = getQueue;
-
-                _channel.QueueBind(getQueueKey, _routesVersionExchange, getQueueKey); /*  tüm baðlantýlar saðlandý. */
-
-                var consumer = new EventingBasicConsumer(_channel);
-                consumer.Received += (ch, ea) =>
+                foreach (var getQueue in getlistQueue)
                 {
-                    string setQueueName = getQueueKey;
-                    var body = ea.Body.ToArray();
-                    var message = Encoding.UTF8.GetString(body);
-                    var modelConvert = JsonConvert.DeserializeObject<GetVersionModel>(message);
-                    AddLog3(getQueueKey + " Queden Cevap =  " + message);
-                };
+                    string getQueueKey = getQueue;
+
+                    _channel.QueueBind(getQueueKey, _routesVersionExchange, getQueueKey); /*  tüm baðlantýlar saðlandý. */
+
+                    var consumer = new EventingBasicConsumer(_channel);
+                    consumer.Received += (ch, ea) =>
+                    {
+                        string setQueueName = getQueueKey;
+                        var body = ea.Body.ToArray();
+                        var message = Encoding.UTF8.GetString(body);
+                        var modelConvert = JsonConvert.DeserializeObject<GetVersionModel>(message);
+                        AddLog3(getQueueKey + " Queden Cevap =  " + message);
+                    };
 
 
-                _channel.BasicConsume(getQueueKey, true, consumer);
-            }
+                    _channel.BasicConsume(getQueueKey, true, consumer);
+                }
+            });
+            task.Start();
 
             Console.WriteLine($"Mesaj Bekleniyor.");
         }
@@ -289,22 +366,29 @@ namespace RabbitMQ.Client.Queue
             }
 
             string getQueueKey = pnl2WhichClient_txt.Text.Trim();
-            _channel.QueueBind(getQueueKey, _routesVersionExchange, getQueueKey); /*  tüm baðlantýlar saðlandý. */
-
-            listBox2.Items.Clear();
-            AddLog2("Dinleme Yapýlýyor.");
-            var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += (ch, ea) =>
+            try
             {
-                string setQueueName = getQueueKey;
-                var body = ea.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-                var modelConvert = JsonConvert.DeserializeObject<GetVersionModel>(message);
-                AddLog2(getQueueKey + " Queden Cevap =  " + message);
-            };
+                _channel.QueueBind(getQueueKey, _routesVersionExchange, getQueueKey); /*  tüm baðlantýlar saðlandý. */
+
+                listBox2.Items.Clear();
+                AddLog2("Dinleme Yapýlýyor.");
+                var consumer = new EventingBasicConsumer(_channel);
+                consumer.Received += (ch, ea) =>
+                {
+                    string setQueueName = getQueueKey;
+                    var body = ea.Body.ToArray();
+                    var message = Encoding.UTF8.GetString(body);
+                    var modelConvert = JsonConvert.DeserializeObject<GetVersionModel>(message);
+                    AddLog2(getQueueKey + " Queden Cevap =  " + message);
+                };
 
 
-            _channel.BasicConsume(getQueueKey, true, consumer);
+                _channel.BasicConsume(getQueueKey, true, consumer);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Server Tarafýndan adýna açýlmýþ bir kuyruk bulanamadý");
+            }
 
         }
     }
