@@ -24,4 +24,5 @@ Resimde görüldüğü 3 alandan oluşturulmaktdır.
 Tüm Kuyrukları Silme<br>
   -> Özel bir formatta oluşmasını istediğim formatta Queue'ler oluştuğu için serverin oluşturduğu tüm Queleri silebiliyorum..<br>
 # Client Image :<br>
-![resim1](https://github.com/isa-koseoglu/RabbitMQ_Test_Project/assets/93054123/f90c378d-90a6-4c41-a59f-207f1144e87c)
+![reasim1](https://github.com/isa-koseoglu/RabbitMQ_Test_Project/assets/93054123/269766c7-384e-497d-94e7-d635f4d542c6)
+
