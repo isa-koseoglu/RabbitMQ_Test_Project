@@ -235,6 +235,7 @@ namespace RabbitMQ.Client.Queue
 
         private void Dashboard_Load(object sender, EventArgs e) /* login olurken ilgili baðlantý iþelmerimi yapýyorum  */
         {
+
             if (_connectionRabbit == null || !_connectionRabbit.IsOpen)
             {
                 _connectionRabbit = GetConnection();
@@ -251,8 +252,9 @@ namespace RabbitMQ.Client.Queue
             }
 
         }
-        private  void pnl1SendRequest_btn_Click(object sender, EventArgs e) /* servere mesajý publish ediyorum */
+        private void pnl1SendRequest_btn_Click(object sender, EventArgs e) /* servere mesajý publish ediyorum */
         {
+            
             if (string.IsNullOrEmpty(pnl1CountClient_txt.Text))
             {
                 MessageBox.Show("Lütfen Boþ Býrakmayýnýz Adedi");
@@ -289,7 +291,7 @@ namespace RabbitMQ.Client.Queue
                     }
                 });
                 task.Start();
-                
+
             }
         }
 
@@ -301,7 +303,7 @@ namespace RabbitMQ.Client.Queue
                 if (queueAllList.Count == 0)
                 {
                     MessageBox.Show($"Kuyruk Yok ");
-                    
+
                 }
                 else
                 {
@@ -311,12 +313,12 @@ namespace RabbitMQ.Client.Queue
                     }
                     MessageBox.Show($"{queueAllList.Count} adet kuyruk silindi.. ");
                 }
-                
+
                 LogDeleted();
                 AddLog1("Sistem Dinliyor");
                 AddLog2("Sistem Dinliyor");
                 AddLog3("Sistem Dinliyor");
-                
+
             });
             task.Start();
 
