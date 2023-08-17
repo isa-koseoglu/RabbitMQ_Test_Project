@@ -1,0 +1,12 @@
+create database RabbitMQ_TestProject_DB
+GO
+USE RabbitMQ_TestProject_DB
+GO
+CREATE TABLE Test_Table
+( 
+	BranchCode int,
+	StationNo int,
+	ApiVers varchar(50),
+	HtmlVers varchar(50),
+	ClientMessage text
+)

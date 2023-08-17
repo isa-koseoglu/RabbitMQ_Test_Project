@@ -282,8 +282,8 @@ namespace RabbitMQ.Client.Queue
                             MyQueueName = "SET_VERSIYON_" + i + "_1_RABBIT",
                             BranchCode = i,
                             StationNo = 1,
-                            ApiVers = "4.1.7.4",
-                            HtmlVers = "5.3.0"
+                            ApiVers = "4.1.6.5",
+                            HtmlVers = "5.2.1"
                         };
                         WriteToQueue(_channel, _routesVersionExchange, _getVersiyonRoutKey, model);
                     }

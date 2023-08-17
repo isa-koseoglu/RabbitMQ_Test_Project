@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Common.Model;
+using System.Data;
 using System.Text;
 
 
@@ -13,6 +14,8 @@ namespace RabbitMQ.Server.Queue.Manager
     {
 
         //private readonly string _connectStringRabbit = "amqp://guest:guest@localhost:5672";
+        private Server_SQL_CRUD Server_SQL_CRUDClass = Server_SQL_CRUD.Obj();
+      
 
         private IConnection _connectionRabbit;
         private IModel _channel;
@@ -29,13 +32,6 @@ namespace RabbitMQ.Server.Queue.Manager
 
 
         #endregion
-
-
-        //public Server_GetSet_Message()
-        //{
-            
-           
-        //}
 
         private static Server_GetSet_Message obj;
         public static Server_GetSet_Message Obj()
@@ -106,27 +102,23 @@ namespace RabbitMQ.Server.Queue.Manager
             var message = Encoding.UTF8.GetString(body);
             var modelConvert = JsonConvert.DeserializeObject<GetVersionModel>(message);
             Console.WriteLine($"Received Data = {message.ToString()}");
-            /* sql işlemerinde versiyonu güncel olmadığı ortaya çıkmış bulundu. */
 
-            bool GuncelMi = false;
-            /*  güncel değilse güncel api versiyonları eklenip gönderilebilir .. */
-            modelConvert.GetMmeesage = "Versiyonun Güncel Değil Neden..!!";
+            /* sql işlemerinde versiyonu güncel olmadığı ortaya çıkmış bulundu. */
+            GetVersionModel sqlmodel = Server_SQL_CRUDClass.GetById(modelConvert.BranchCode);
+
+            modelConvert.ApiVers = sqlmodel.ApiVers;
+            modelConvert.HtmlVers = sqlmodel.HtmlVers;
+            modelConvert.GetMmeesage= sqlmodel.GetMmeesage;
 
             /* ilgili sql işlemleri yapıldı. */
 
-            if (!GuncelMi)
-            {
+            string getQueueName = modelConvert.MyQueueName;
 
-                GuncelMi = true;
+            CreateQueue(_channel, getQueueName);
 
-                string getQueueName=modelConvert.MyQueueName;
+            _channel.QueueBind(getQueueName, _routesVersionExchange, getQueueName); /*  tüm bağlantılar sağlandı. */
 
-                CreateQueue(_channel, getQueueName);
-
-                _channel.QueueBind(getQueueName, _routesVersionExchange, getQueueName); /*  tüm bağlantılar sağlandı. */
-
-                WriteToQueue(_channel, _routesVersionExchange, getQueueName, modelConvert);  /* mesaj artık burdan gönderiliyor...  */
-            }
+            WriteToQueue(_channel, _routesVersionExchange, getQueueName, modelConvert);  /* mesaj artık burdan gönderiliyor...  */
         }
 
         private bool CheckExchangeExtists(IModel channel , string exchangeName )
