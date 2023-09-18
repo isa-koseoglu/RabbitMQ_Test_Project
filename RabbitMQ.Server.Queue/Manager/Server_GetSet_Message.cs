@@ -15,7 +15,7 @@ namespace RabbitMQ.Server.Queue.Manager
 
         //private readonly string _connectStringRabbit = "amqp://guest:guest@localhost:5672";
         private Server_SQL_CRUD Server_SQL_CRUDClass = Server_SQL_CRUD.Obj();
-      
+
 
         private IConnection _connectionRabbit;
         private IModel _channel;
@@ -108,7 +108,9 @@ namespace RabbitMQ.Server.Queue.Manager
 
             modelConvert.ApiVers = sqlmodel.ApiVers;
             modelConvert.HtmlVers = sqlmodel.HtmlVers;
-            modelConvert.GetMmeesage= sqlmodel.GetMmeesage;
+            modelConvert.GetMmeesage = @"{ ""BranchID"": ""100"", ""StationNo"": ""1"", ""IpAddress"": ""192.168.1.98"", ""Version"": ""????"", ""InfiniaApiVersion"": ""????"", ""InfiniaExeVersion"": ""????"", ""WindowsOsVersion"": ""????"", ""ModuleVersion"": ""????"", ""HtmlVersion"": ""????"", ""MacAddress"": ""????"", ""ApiVersionUpdate"": true, ""ApiMainBaseUrl"": ""http://localhost:44376"", ""ApiMainUserName"": ""echoclientrestapi95iw46"", ""ApiMainUserPass"": ""mbj4zDP1I7"", ""ApiVersionBaseUrl"": ""http://localhost:44376"", ""ApiVersionUserName"": ""echoclientrestapi95iw46"", ""ApiVersionUserPass"": ""mbj4zDP1I7"", ""ApiBackupBaseUrl"": ""http://localhost:44376"", ""ApiBackupUserName"": ""echoclientrestapi95iw46"", ""ApiBackupUserPass"": ""mbj4zDP1I7"", ""ApiPluBaseUrl"": ""http://localhost:44376"", ""ApiPluUserName"": ""echoclientrestapi95iw46"", ""ApiPluUserPass"": ""mbj4zDP1I7"", ""ApiMediaBaseUrl"": ""http://localhost:44376"", ""ApiMediaUserName"": ""echoclientrestapi95iw46"", ""ApiMediaUserPass"": ""mbj4zDP1I7"", ""ApiConnUpdate"": true, ""BackupFtpBaseUrl"": ""ftp://SOK-ECHOP3.YILDIZ.DOMAIN/"", ""BackupFtpUserName"": ""echoftpclient"", ""BackupFtpUserPass"": ""i3N1t0aYUR"", ""PluFtpBaseUrl"": ""ftp://SOK-ECHOP1.YILDIZ.DOMAIN/"", ""PluFtpUserName"": ""echoftpclient"", ""PluFtpUserPass"": ""i3N1t0aYUR"", ""MediaFtpBaseUrl"": ""ftp://SOK-ECHOP1.YILDIZ.DOMAIN/"", ""MediaFtpUserName"": ""echoftpclient"", ""MediaFtpUserPass"": ""i3N1t0aYUR"", ""BackUpMainFile"": ""E:\\ECHO_FTP\\"", ""FtpConnUpdate"": true, ""LogRemoveDay"": 7, ""ClientAgainMinute"": 5, ""VersionTaskAgainMinute"": 4, ""PluAgainMinute"": 2, ""MediaAgainMinute"": 20, ""ParamKeyAgainMinute"": 0, ""DataBackupMinute"": 10, ""DataBackupStartHour"": ""10"", ""DataBackupEndHour"": ""10"", ""DataBackupCheckHour"": ""10"", ""DataBackupLastThreeDays"": ""7.11.2022 00:00:00"", ""SettingsUpdate"": false }";
+
+
 
             /* ilgili sql işlemleri yapıldı. */
 

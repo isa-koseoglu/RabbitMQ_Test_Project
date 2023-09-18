@@ -122,7 +122,7 @@ namespace RabbitMQ.Client.Queue
 
         #region Properties
 
-        private readonly string _connectStringRabbit = "amqp://guest:guest@localhost:5672";
+        private readonly string _connectStringRabbit = "amqp://echotest:1@192.168.1.45:5672";
 
         private readonly string _getVersionQueue = "GET_VERSION_QUEUE";
 
@@ -340,12 +340,12 @@ namespace RabbitMQ.Client.Queue
 
         private async void AllClientReadQueue_btn_Click(object sender, EventArgs e) /* Server tarafından oluşturduğum tüm queue'leri alıp okuma işlemi yapar.  */
         {
-            var getlistQueue = await GetAllQueueAsync();
-            if (getlistQueue.Count == 0)
-            {
-                AddLog3("Bana Tanımlanmış Kuyruk Yok ki");
-                return;
-            }
+            //var getlistQueue = await GetAllQueueAsync();
+            //if (getlistQueue.Count == 0)
+            //{
+            //    AddLog3("Bana Tanımlanmış Kuyruk Yok ki");
+            //    return;
+            //}
             Task task = new(() =>
             {
 
